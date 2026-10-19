@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+  <title>vasuCAM Dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="container" role="main">
+    <div class="main">
+      <header>
+        <div class="logo">VC</div>
+        <div>
+          <h1>vasuCAM Dashboard</h1>
+          <p class="lead">Live frames from your Raspberry Pi camera via MQTT (vasuCAM/frame)</p>
+        </div>
+        <div style="margin-left:auto">
+          <span id="statusPill" class="status disconnected">Disconnected</span>
+        </div>
+      </header>
+
+      <div class="card">
+        <div class="viewer" id="viewer">
+          <img id="frameImg" alt="Waiting for frames…" />
+        </div>
+
+        <div class="info-row">
+          <div class="info-item">Topic: <strong id="topicLabel">vasuCAM/frame</strong></div>
+          <div class="info-item">Broker: <strong id="brokerLabel">wss://test.mosquitto.org:8081</strong></div>
+          <div class="info-item">Last frame: <span id="lastSize">—</span></div>
+          <div class="info-item">FPS: <span id="fps">0</span></div>
+        </div>
+
+        <div class="time-row">
+          <div>Frame received: <span id="frameTime">—</span></div>
+          <div>Latency (since prev): <span id="latency">—</span></div>
+        </div>
+      </div>
+
+      <footer>
+        Public broker test.mosquitto.org — frames are JPEG payloads from your Python publisher. Use wss:// for HTTPS-hosted pages.
+      </footer>
+    </div>
+
+    <aside class="side">
+      <div class="card">
+        <label for="broker">Broker URL</label>
+        <input id="broker" type="text" value="wss://test.mosquitto.org:8081" />
+
+        <label for="topic">Topic</label>
+        <input id="topic" type="text" value="vasuCAM/frame" />
+
+        <div class="row" style="margin-top:10px">
+          <button id="connectBtn" class="btn btn-primary">Connect</button>
+          <button id="disconnectBtn" class="btn btn-ghost" disabled>Disconnect</button>
+        </div>
+
+        <div class="small muted">Client ID</div>
+        <div class="small" id="clientId">—</div>
+
+        <div style="height:8px"></div>
+
+        <div class="small muted">Quick stats</div>
+        <div class="stats">
+          <div class="stat">
+            <div class="muted">Frames</div>
+            <div class="value" id="framesCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Connected since</div>
+            <div class="value" id="connectedSince">—</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Last payload (bytes)</div>
+            <div class="value" id="payloadSize">—</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Latency avg (ms)</div>
+            <div class="value" id="avgLatency">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="small muted">Debug / Log</div>
+        <pre id="log" class="log">Ready.</pre>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
